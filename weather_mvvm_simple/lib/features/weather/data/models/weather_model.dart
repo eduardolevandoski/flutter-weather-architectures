@@ -19,14 +19,6 @@ class WeatherModel {
     required this.windSpeed,
   });
 
-  String get location => '$cityName, $country';
-
-  String get tempFormatted => '${temperature.toStringAsFixed(0)}°';
-
-  String get feelsLikeFormatted => '${feelsLike.toStringAsFixed(0)}°';
-
-  String get windFormatted => '${windSpeed.toStringAsFixed(1)} m/s';
-
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
       cityName: json['name'] as String,
@@ -39,15 +31,4 @@ class WeatherModel {
       windSpeed: (json['wind']['speed'] as num).toDouble(),
     );
   }
-
-  static const placeholder = WeatherModel(
-    cityName: 'New York',
-    country: 'US',
-    temperature: 22,
-    feelsLike: 21,
-    description: 'clear sky',
-    iconCode: '01d',
-    humidity: 60,
-    windSpeed: 3.5,
-  );
 }

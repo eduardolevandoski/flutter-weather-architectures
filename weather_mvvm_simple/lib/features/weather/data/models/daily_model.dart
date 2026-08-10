@@ -5,20 +5,4 @@ class DailyModel {
   final String iconCode;
 
   const DailyModel({required this.date, required this.minTemp, required this.maxTemp, required this.iconCode});
-
-  String get minFormatted => '${minTemp.toStringAsFixed(0)}°';
-
-  String get maxFormatted => '${maxTemp.toStringAsFixed(0)}°';
-
-  String get weekday {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    return days[date.weekday % 7];
-  }
-
-  static DailyModel placeholder(int index) => DailyModel(
-    date: DateTime.now().add(Duration(days: index)),
-    minTemp: 15,
-    maxTemp: 25,
-    iconCode: '01d',
-  );
 }

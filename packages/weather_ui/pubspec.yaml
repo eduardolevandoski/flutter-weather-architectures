@@ -1,0 +1,20 @@
+name: weather_ui
+description: "Shared weather UI for the architecture study projects"
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  skeletonizer: ^2.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

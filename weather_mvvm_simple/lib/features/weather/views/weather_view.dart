@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_mvvm_simple/core/errors/exceptions.dart';
-import 'package:weather_mvvm_simple/features/weather/data/models/daily_model.dart';
-import 'package:weather_mvvm_simple/features/weather/data/models/hourly_model.dart';
-import 'package:weather_mvvm_simple/features/weather/data/models/weather_model.dart';
 import 'package:weather_mvvm_simple/features/weather/viewmodels/weather_viewmodel.dart';
-import 'package:weather_mvvm_simple/features/weather/views/widgets/city_suggestions_list.dart';
-import 'package:weather_mvvm_simple/features/weather/views/widgets/hourly_forecast_card.dart';
-import 'package:weather_mvvm_simple/features/weather/views/widgets/weather_card.dart';
-import 'package:weather_mvvm_simple/features/weather/views/widgets/weather_search_bar.dart';
-import 'package:weather_mvvm_simple/features/weather/views/widgets/weekly_forecast_card.dart';
+import 'package:weather_mvvm_simple/features/weather/views/weather_display_mappers.dart';
+import 'package:weather_ui/weather_ui.dart';
 
 class WeatherView extends StatelessWidget {
   const WeatherView({super.key});
@@ -43,7 +37,10 @@ class WeatherView extends StatelessWidget {
                   top: 80,
                   left: 0,
                   right: 0,
-                  child: CitySuggestionsList(cities: vm.suggestions, onSelected: vm.selectCity),
+                  child: CitySuggestionsList(
+                    cities: vm.suggestions.map((city) => city.toDisplay()).toList(),
+                    onSelected: (city) => vm.selectCity(city.latitude, city.longitude),
+                  ),
                 ),
             ],
           ),
@@ -63,9 +60,9 @@ class WeatherView extends StatelessWidget {
 class _LoadingContent extends StatelessWidget {
   const _LoadingContent();
 
-  static final _weather = WeatherModel.placeholder;
-  static final _hourly = List.generate(8, HourlyModel.placeholder);
-  static final _daily = List.generate(5, DailyModel.placeholder);
+  static final _weather = WeatherDisplay.placeholder;
+  static final _hourly = List.generate(8, HourlyDisplay.placeholder);
+  static final _daily = List.generate(5, DailyDisplay.placeholder);
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +88,11 @@ class _LoadedContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        WeatherCard(weather: vm.weather!),
+        WeatherCard(weather: vm.weather!.toDisplay()),
         const SizedBox(height: 16),
-        HourlyForecastCard(hourly: vm.forecast!.hourly),
+        HourlyForecastCard(hourly: vm.forecast!.hourly.map((hour) => hour.toDisplay()).toList()),
         const SizedBox(height: 12),
-        WeeklyForecastCard(daily: vm.forecast!.daily),
+        WeeklyForecastCard(daily: vm.forecast!.daily.map((day) => day.toDisplay()).toList()),
         const SizedBox(height: 24),
       ],
     );

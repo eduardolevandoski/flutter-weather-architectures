@@ -13,8 +13,6 @@ class CityModel {
     required this.longitude,
   });
 
-  String get displayName => [name, if (state != null) state, country].join(', ');
-
   factory CityModel.fromJson(Map<String, dynamic> json) {
     return CityModel(
       name: json['name'] as String,

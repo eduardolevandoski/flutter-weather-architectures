@@ -15,7 +15,8 @@ dependencies:
   geolocator: ^14.0.2
   http: ^1.6.0
   provider: ^6.1.5+1
-  skeletonizer: ^2.1.3
+  weather_ui:
+    path: ../packages/weather_ui
 
 dev_dependencies:
   flutter_test:
@@ -31,9 +32,9 @@ flutter:
     - .env
 
 flutter_launcher_icons:
-  image_path: "assets/icon.png"
+  image_path: "../shared/icon.png"
+  adaptive_icon_foreground: "../shared/icon_foreground.png"
   android: true
   ios: true
   remove_alpha_ios: true
   adaptive_icon_background: "#3B7DD8"
-  adaptive_icon_foreground: "assets/icon_foreground.png"

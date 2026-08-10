@@ -44,7 +44,7 @@ class WeatherViewModel extends ChangeNotifier {
     _debounce = Timer(const Duration(milliseconds: 400), () => _searchCities(query.trim()));
   }
 
-  Future<void> selectCity(CityModel city) async {
+  Future<void> selectCity(double latitude, double longitude) async {
     clearSuggestions();
 
     status = WeatherStatus.loading;
@@ -52,7 +52,7 @@ class WeatherViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _loadByCoords(city.latitude, city.longitude);
+      await _loadByCoords(latitude, longitude);
     } on NetworkException {
       _setError(const NetworkException());
     } on ServerException catch (e) {
