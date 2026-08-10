@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:weather_mvvm_simple/features/weather/data/models/hourly_model.dart';
+import 'package:weather_mvvm_simple/features/weather/views/widgets/weather_icon.dart';
 
 class HourlyForecastCard extends StatelessWidget {
   final List<HourlyModel> hourly;
@@ -44,8 +45,8 @@ class HourlyForecastCard extends StatelessWidget {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: hourly.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 16),
-                  itemBuilder: (context, index) => _HourlyForecast(hourly: hourly[index], isLoading: isLoading),
+                  separatorBuilder: (_, __) => const SizedBox(width: 20),
+                  itemBuilder: (context, index) => _HourlySlot(hourly: hourly[index]),
                 ),
               ),
             ],
@@ -56,11 +57,10 @@ class HourlyForecastCard extends StatelessWidget {
   }
 }
 
-class _HourlyForecast extends StatelessWidget {
+class _HourlySlot extends StatelessWidget {
   final HourlyModel hourly;
-  final bool isLoading;
 
-  const _HourlyForecast({required this.hourly, required this.isLoading});
+  const _HourlySlot({required this.hourly});
 
   @override
   Widget build(BuildContext context) {
@@ -73,17 +73,8 @@ class _HourlyForecast extends StatelessWidget {
           hourly.hourFormatted,
           style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
         ),
-        Skeleton.replace(
-          replace: isLoading,
-          replacement: const SizedBox(width: 36, height: 36),
-          child: Image.network(
-            hourly.iconUrl,
-            width: 36,
-            height: 36,
-            loadingBuilder: (context, child, progress) => progress == null ? child : const SizedBox(width: 36, height: 36),
-          ),
-        ),
-        Text(hourly.temperatureFormatted, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+        WeatherIcon(iconCode: hourly.iconCode, size: 30),
+        Text(hourly.tempFormatted, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
       ],
     );
   }

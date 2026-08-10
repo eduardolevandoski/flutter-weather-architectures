@@ -7,6 +7,9 @@ class ForecastModel {
 
   const ForecastModel({required this.hourly, required this.daily});
 
+  /// The API gives us 40 forecasts, one every 3 hours over 5 days.
+  /// The first 8 are the next 24h. There's no daily endpoint on the
+  /// free tier, so we build the daily list ourselves.
   factory ForecastModel.fromJson(Map<String, dynamic> json) {
     final forecasts = json['list'] as List<dynamic>;
 
@@ -17,6 +20,8 @@ class ForecastModel {
     return ForecastModel(hourly: hourly, daily: daily);
   }
 
+  /// Splits the flat list into one group per day.
+  /// The 'YYYY-MM-DD' keys are just for grouping, never shown.
   static Map<String, List<Map<String, dynamic>>> _groupForecastsByDay(List<dynamic> forecasts) {
     final Map<String, List<Map<String, dynamic>>> byDay = {};
 
@@ -30,6 +35,9 @@ class ForecastModel {
     return byDay;
   }
 
+  /// Turns one day's forecasts into a single row.
+  /// Uses a midday forecast for the icon, so the day gets a
+  /// daytime icon instead of a nighttime one.
   static DailyModel _dailyModelFromForecasts(List<Map<String, dynamic>> forecasts) {
     final temps = forecasts.map((forecast) => (forecast['main']['temp'] as num).toDouble()).toList();
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:weather_mvvm_simple/features/weather/data/models/weather_model.dart';
+import 'package:weather_mvvm_simple/features/weather/views/widgets/weather_icon.dart';
 
 class WeatherCard extends StatelessWidget {
   final WeatherModel weather;
@@ -26,24 +27,13 @@ class WeatherCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                weather.temperatureFormatted,
+                weather.tempFormatted,
                 style: theme.textTheme.displayLarge?.copyWith(fontWeight: FontWeight.w200, fontSize: 80),
               ),
-              const SizedBox(width: 8),
-              Skeleton.replace(
-                replace: isLoading,
-                replacement: const SizedBox(width: 64, height: 64),
-                child: Image.network(
-                  weather.iconUrl,
-                  width: 64,
-                  height: 64,
-                  loadingBuilder: (context, child, progress) =>
-                      progress == null ? child : const SizedBox(width: 64, height: 64),
-                ),
-              ),
+              const SizedBox(width: 16),
+              WeatherIcon(iconCode: weather.iconCode, size: 56),
             ],
           ),
           Text(
@@ -53,15 +43,15 @@ class WeatherCard extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             children: [
-              Skeleton.leaf(
+              Skeleton.shade(
                 child: _StatChip(icon: Icons.thermostat_outlined, label: 'Feels like ${weather.feelsLikeFormatted}'),
               ),
               const SizedBox(width: 8),
-              Skeleton.leaf(
+              Skeleton.shade(
                 child: _StatChip(icon: Icons.water_drop_outlined, label: '${weather.humidity}%'),
               ),
               const SizedBox(width: 8),
-              Skeleton.leaf(
+              Skeleton.shade(
                 child: _StatChip(icon: Icons.air, label: weather.windFormatted),
               ),
             ],

@@ -19,11 +19,9 @@ class WeatherModel {
     required this.windSpeed,
   });
 
-  String get iconUrl => 'https://openweathermap.org/img/wn/$iconCode@2x.png';
-
   String get location => '$cityName, $country';
 
-  String get temperatureFormatted => '${temperature.toStringAsFixed(0)}°';
+  String get tempFormatted => '${temperature.toStringAsFixed(0)}°';
 
   String get feelsLikeFormatted => '${feelsLike.toStringAsFixed(0)}°';
 

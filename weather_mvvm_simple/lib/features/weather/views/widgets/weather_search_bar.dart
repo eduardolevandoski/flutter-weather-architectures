@@ -3,10 +3,17 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class WeatherSearchBar extends StatefulWidget {
   final ValueChanged<String> onSearch;
+  final ValueChanged<String> onChanged;
   final VoidCallback onClear;
   final bool isLoading;
 
-  const WeatherSearchBar({super.key, required this.onSearch, required this.onClear, this.isLoading = false});
+  const WeatherSearchBar({
+    super.key,
+    required this.onSearch,
+    required this.onChanged,
+    required this.onClear,
+    this.isLoading = false,
+  });
 
   @override
   State<WeatherSearchBar> createState() => _WeatherSearchBarState();
@@ -62,6 +69,7 @@ class _WeatherSearchBarState extends State<WeatherSearchBar> {
             padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
             leading: const Icon(Icons.search),
             trailing: [if (_hasText) IconButton(icon: const Icon(Icons.close), onPressed: _clear)],
+            onChanged: widget.onChanged,
             onSubmitted: (_) => _submit(),
           ),
         ),

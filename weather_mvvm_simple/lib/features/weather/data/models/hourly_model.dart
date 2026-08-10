@@ -5,9 +5,7 @@ class HourlyModel {
 
   const HourlyModel({required this.time, required this.temperature, required this.iconCode});
 
-  String get iconUrl => 'https://openweathermap.org/img/wn/$iconCode@2x.png';
-
-  String get temperatureFormatted => '${temperature.toStringAsFixed(0)}°';
+  String get tempFormatted => '${temperature.toStringAsFixed(0)}°';
 
   String get hourFormatted => '${time.hour.toString().padLeft(2, '0')}:00';
 

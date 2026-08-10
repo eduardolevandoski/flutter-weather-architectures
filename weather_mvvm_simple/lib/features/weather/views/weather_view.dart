@@ -5,6 +5,7 @@ import 'package:weather_mvvm_simple/features/weather/data/models/daily_model.dar
 import 'package:weather_mvvm_simple/features/weather/data/models/hourly_model.dart';
 import 'package:weather_mvvm_simple/features/weather/data/models/weather_model.dart';
 import 'package:weather_mvvm_simple/features/weather/viewmodels/weather_viewmodel.dart';
+import 'package:weather_mvvm_simple/features/weather/views/widgets/city_suggestions_list.dart';
 import 'package:weather_mvvm_simple/features/weather/views/widgets/hourly_forecast_card.dart';
 import 'package:weather_mvvm_simple/features/weather/views/widgets/weather_card.dart';
 import 'package:weather_mvvm_simple/features/weather/views/widgets/weather_search_bar.dart';
@@ -21,17 +22,29 @@ class WeatherView extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              const SizedBox(height: 16),
-              WeatherSearchBar(
-                isLoading: vm.status == WeatherStatus.loading,
-                onSearch: vm.searchCity,
-                onClear: vm.loadCurrentLocation,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  WeatherSearchBar(
+                    isLoading: vm.status == WeatherStatus.loading,
+                    onSearch: vm.searchCity,
+                    onChanged: vm.onQueryChanged,
+                    onClear: vm.loadCurrentLocation,
+                  ),
+                  const SizedBox(height: 24),
+                  Expanded(child: _buildBody(vm)),
+                ],
               ),
-              const SizedBox(height: 24),
-              Expanded(child: _buildBody(vm)),
+              if (vm.suggestions.isNotEmpty)
+                Positioned(
+                  top: 80,
+                  left: 0,
+                  right: 0,
+                  child: CitySuggestionsList(cities: vm.suggestions, onSelected: vm.selectCity),
+                ),
             ],
           ),
         ),
@@ -94,15 +107,17 @@ class _EmptyContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.cloud_outlined, size: 72, color: Theme.of(context).colorScheme.outline),
+          Icon(Icons.cloud_outlined, size: 72, color: theme.colorScheme.outline),
           const SizedBox(height: 12),
           Text(
             'Search for a city to get started',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.outline),
+            style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.outline),
           ),
         ],
       ),
@@ -145,7 +160,7 @@ class _ErrorContent extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: color),
+          Icon(icon, size: 72, color: color),
           const SizedBox(height: 12),
           Text(
             message,

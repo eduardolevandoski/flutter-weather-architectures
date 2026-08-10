@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:weather_mvvm_simple/core/location/location_service.dart';
+import 'package:weather_mvvm_simple/core/theme/app_theme.dart';
 import 'package:weather_mvvm_simple/features/weather/data/weather_repository.dart';
 import 'package:weather_mvvm_simple/features/weather/viewmodels/weather_viewmodel.dart';
 import 'package:weather_mvvm_simple/features/weather/views/weather_view.dart';
@@ -23,7 +24,9 @@ class WeatherApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Weather MVVM Simple',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(colorSchemeSeed: Colors.blue, useMaterial3: true, brightness: Brightness.light),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
         home: const WeatherView(),
       ),
     );

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:weather_mvvm_simple/core/errors/exceptions.dart';
 import 'package:weather_mvvm_simple/core/location/location_service.dart';
+import 'package:weather_mvvm_simple/features/weather/data/models/city_model.dart';
 import 'package:weather_mvvm_simple/features/weather/data/models/forecast_model.dart';
 import 'package:weather_mvvm_simple/features/weather/data/models/weather_model.dart';
 import 'package:weather_mvvm_simple/features/weather/data/weather_repository.dart';
@@ -19,8 +22,49 @@ class WeatherViewModel extends ChangeNotifier {
   WeatherModel? weather;
   ForecastModel? forecast;
   Exception? error;
+  List<CityModel> suggestions = [];
+
+  Timer? _debounce;
+  int _searchId = 0;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  void onQueryChanged(String query) {
+    _debounce?.cancel();
+
+    if (query.trim().length < 3) {
+      clearSuggestions();
+      return;
+    }
+
+    _debounce = Timer(const Duration(milliseconds: 400), () => _searchCities(query.trim()));
+  }
+
+  Future<void> selectCity(CityModel city) async {
+    clearSuggestions();
+
+    status = WeatherStatus.loading;
+    error = null;
+    notifyListeners();
+
+    try {
+      await _loadByCoords(city.latitude, city.longitude);
+    } on NetworkException {
+      _setError(const NetworkException());
+    } on ServerException catch (e) {
+      _setError(e);
+    } catch (_) {
+      _setError(const NetworkException());
+    }
+  }
 
   Future<void> loadCurrentLocation() async {
+    clearSuggestions();
+
     status = WeatherStatus.loading;
     error = null;
     notifyListeners();
@@ -39,6 +83,8 @@ class WeatherViewModel extends ChangeNotifier {
 
   Future<void> searchCity(String city) async {
     if (city.trim().isEmpty) return;
+
+    clearSuggestions();
 
     status = WeatherStatus.loading;
     error = null;
@@ -65,6 +111,27 @@ class WeatherViewModel extends ChangeNotifier {
       _setError(const NetworkException());
     }
 
+    notifyListeners();
+  }
+
+  void clearSuggestions() {
+    _debounce?.cancel();
+    _searchId++;
+    if (suggestions.isEmpty) return;
+    suggestions = [];
+    notifyListeners();
+  }
+
+  Future<void> _searchCities(String query) async {
+    final id = ++_searchId;
+    try {
+      final results = await _repository.searchCities(query);
+      if (id != _searchId) return;
+      suggestions = results;
+    } catch (_) {
+      if (id != _searchId) return;
+      suggestions = [];
+    }
     notifyListeners();
   }
 

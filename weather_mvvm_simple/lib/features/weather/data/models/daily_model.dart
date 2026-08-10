@@ -6,11 +6,9 @@ class DailyModel {
 
   const DailyModel({required this.date, required this.minTemp, required this.maxTemp, required this.iconCode});
 
-  String get iconUrl => 'https://openweathermap.org/img/wn/$iconCode@2x.png';
+  String get minFormatted => '${minTemp.toStringAsFixed(0)}°';
 
-  String get minTempFormatted => '${minTemp.toStringAsFixed(0)}°';
-
-  String get maxTempFormatted => '${maxTemp.toStringAsFixed(0)}°';
+  String get maxFormatted => '${maxTemp.toStringAsFixed(0)}°';
 
   String get weekday {
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
