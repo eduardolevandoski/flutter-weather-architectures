@@ -1,0 +1,19 @@
+import 'package:weather_mvvm_clean/features/weather/domain/entities/hourly_weather.dart';
+
+class HourlyModel {
+  final DateTime time;
+  final double temperature;
+  final String iconCode;
+
+  const HourlyModel({required this.time, required this.temperature, required this.iconCode});
+
+  factory HourlyModel.fromJson(Map<String, dynamic> json) {
+    return HourlyModel(
+      time: DateTime.fromMillisecondsSinceEpoch((json['dt'] as int) * 1000),
+      temperature: (json['main']['temp'] as num).toDouble(),
+      iconCode: json['weather'][0]['icon'] as String,
+    );
+  }
+
+  HourlyWeather toEntity() => HourlyWeather(time: time, temperature: temperature, iconCode: iconCode);
+}
