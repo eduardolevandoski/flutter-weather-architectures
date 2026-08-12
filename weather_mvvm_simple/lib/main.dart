@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:weather_mvvm_simple/core/location/location_service.dart';
 import 'package:weather_mvvm_simple/core/theme/app_theme.dart';
 import 'package:weather_mvvm_simple/features/weather/data/weather_repository.dart';
-import 'package:weather_mvvm_simple/features/weather/viewmodels/weather_viewmodel.dart';
-import 'package:weather_mvvm_simple/features/weather/views/weather_view.dart';
+import 'package:weather_mvvm_simple/features/weather/view/weather_view.dart';
+import 'package:weather_mvvm_simple/features/weather/viewmodel/weather_viewmodel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

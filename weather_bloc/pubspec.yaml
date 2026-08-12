@@ -1,0 +1,41 @@
+name: weather_bloc
+description: "Weather app - Bloc study project"
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bloc_concurrency: ^0.3.0
+  flutter_bloc: ^9.1.1
+  flutter_dotenv: ^6.0.0
+  geolocator: ^14.0.2
+  http: ^1.6.0
+  stream_transform: ^2.1.1
+  weather_ui:
+    path: ../packages/weather_ui
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+
+flutter_launcher_icons:
+  image_path: "../shared/icon.png"
+  adaptive_icon_foreground: "../shared/icon_foreground.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#3B7DD8"

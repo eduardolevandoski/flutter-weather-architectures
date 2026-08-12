@@ -7,7 +7,7 @@ import 'package:weather_mvvm_clean/features/weather/domain/usecases/get_current_
 import 'package:weather_mvvm_clean/features/weather/domain/usecases/get_weather_by_city.dart';
 import 'package:weather_mvvm_clean/features/weather/domain/usecases/get_weather_by_coords.dart';
 import 'package:weather_mvvm_clean/features/weather/domain/usecases/search_cities.dart';
-import 'package:weather_mvvm_clean/features/weather/presentation/viewmodels/weather_viewmodel.dart';
+import 'package:weather_mvvm_clean/features/weather/presentation/viewmodel/weather_viewmodel.dart';
 
 WeatherViewModel buildWeatherViewModel() {
   final weatherDataSource = WeatherRemoteDataSource(http.Client());
